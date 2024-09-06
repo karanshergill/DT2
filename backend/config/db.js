@@ -5,15 +5,19 @@ import { logger } from "../utils/logger.js";
 dotenv.config();
 
 export const connectDB = async () => {
+
     const uri = process.env.MONGO_URI;
+
     // to handle initial connection
     mongoose.connection.on('connected', () => {
         logger.info('MongoDB connected');
     });
+    
     // to handle initial connection errors
     mongoose.connection.on('disconnected', () => {
         logger.info('MongoDB disconnected');
     });
+    
     // to handle errors after initial connection was established
     mongoose.connection.on('error', (error) => {
         logger.error(`MongoDB Connection Error: ${error.message}`);
