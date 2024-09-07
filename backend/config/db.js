@@ -1,35 +1,37 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import { logger } from "../utils/logger.js";
 
 dotenv.config();
 
 export const connectDB = async () => {
+    console.log("connectDB is being called");
 
     const uri = process.env.MONGO_URI;
+    console.log(`Mongo URI: ${uri}`);
+
 
     // to handle initial connection
     mongoose.connection.on('connected', () => {
-        logger.info('MongoDB connected');
+        console.log('MongoDB connected');
     });
-    
+
     // to handle initial connection errors
     mongoose.connection.on('disconnected', () => {
-        logger.info('MongoDB disconnected');
+        console.log('MongoDB disconnected');
     });
-    
+
     // to handle errors after initial connection was established
     mongoose.connection.on('error', (error) => {
-        logger.error(`MongoDB Connection Error: ${error.message}`);
+        console.log(`MongoDB Connection Error: ${error.message}`);
     });
 
     try {
         await mongoose.connect(uri);
         // to handle initial connection
-        logger.info("MongoDB connected successfully");
+        // console.log("Connected to MongoDB!");
     } catch (error) {
         // to handle initial connection errors
-        logger.error(`MongoDB Connection Failed! ${error.message}`);
+        console.log(`MongoDB Connection Failed! ${error.message}`);
         process.exit(1);
     }
 };

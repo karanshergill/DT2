@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 // Schema
-const TodoSchema = new mongoose.Schema({
+const todoSchema = new mongoose.Schema({
     category: {
         type: String,
         required: true,
@@ -21,4 +21,4 @@ const TodoSchema = new mongoose.Schema({
 });
 
 // Model
-export const Todo = mongoose.model("Todo", TodoSchema);
+export const Todo = mongoose.model("Todo", todoSchema);

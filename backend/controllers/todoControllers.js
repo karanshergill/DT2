@@ -1,5 +1,10 @@
+import mongoose from "mongoose";
 import { Todo } from "../models/todoModel.js";
 
+// Validate if the ID is a valid ObjectId
+const isValidObjectId = (id) => mongoose.Types.ObjectId.isValid(id);
+
+// Get all todos
 export const getAll = async (req, res) => {
     try {
         const todos = await Todo.find();
@@ -9,10 +14,14 @@ export const getAll = async (req, res) => {
     }
 };
 
+// Get a todo by ID
 export const getById = async (req, res) => {
-
     const { id } = req.params;
-    
+
+    if (!isValidObjectId(id)) {
+        return res.status(400).json({ message: 'Invalid ID format.' });
+    }
+
     try {
         const todo = await Todo.findById(id);
         if (!todo) {
@@ -24,7 +33,8 @@ export const getById = async (req, res) => {
     }
 };
 
-export const create = async (req, res) => {
+// Create a new todo
+export const createNew = async (req, res) => {
     const { category, title, description, status } = req.body;
 
     if (!category || !title || !description || !status) {
@@ -42,34 +52,38 @@ export const create = async (req, res) => {
         const savedTodo = await newTodo.save();
         res.status(201).json(savedTodo);
     } catch (error) {
-        res.status(409).json({ message: error.message });
+        res.status(500).json({ message: error.message });
     }
 };
 
+// Update a todo by ID
 export const updateById = async (req, res) => {
     const { id } = req.params;
-    const { category, title, description, status } = req.body;
+
+    if (!isValidObjectId(id)) {
+        return res.status(400).json({ message: 'Invalid ID format.' });
+    }
 
     try {
-        const uodated = await Todo.findByIdAndUpdate(
-            id,
-            { category, title, description, status },
-            { new: true }
-        );
+        const updated = await Todo.findByIdAndUpdate(id, req.body,{ new: true });
 
-        if (!uodated) {
+        if (!updated) {
             return res.status(404).json({ message: 'Not Found!' });
         }
 
-        res.status(200).json(uodated);
+        res.status(200).json(updated);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
 
+// Delete a todo by ID
 export const deleteById = async (req, res) => {
-
     const { id } = req.params;
+
+    if (!isValidObjectId(id)) {
+        return res.status(400).json({ message: 'Invalid ID format.' });
+    }
 
     try {
         const deleted = await Todo.findByIdAndDelete(id);
