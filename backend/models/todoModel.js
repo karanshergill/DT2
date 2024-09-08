@@ -17,8 +17,11 @@ const todoSchema = new mongoose.Schema({
     status: {
         type: String,
         required: true,
+        enum: ["pending", "in-progress", "completed"], // prevent invalid status entries
+        default: "pending",
     },
-});
+},
+    { timestamps: true });
 
 // Model
 export const Todo = mongoose.model("Todo", todoSchema);

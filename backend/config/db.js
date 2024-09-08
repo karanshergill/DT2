@@ -9,18 +9,17 @@ export const connectDB = async () => {
     const uri = process.env.MONGO_URI;
     console.log(`Mongo URI: ${uri}`);
 
-
-    // to handle initial connection
+    // event listener to handle initial connection
     mongoose.connection.on('connected', () => {
         console.log('MongoDB connected');
     });
 
-    // to handle initial connection errors
+    // event listener to handle initial connection errors
     mongoose.connection.on('disconnected', () => {
         console.log('MongoDB disconnected');
     });
 
-    // to handle errors after initial connection was established
+    // event listener to handle errors after initial connection was established
     mongoose.connection.on('error', (error) => {
         console.log(`MongoDB Connection Error: ${error.message}`);
     });
