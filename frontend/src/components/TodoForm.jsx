@@ -15,14 +15,18 @@ export const TodoForm = () => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <input
-                type="text"
-                placeholder="Enter a new todo"
-                {...register("title", { required: true })}
-            />
-            {errors.title && <span>This field is required</span>}
+            <div>
+                <label htmlFor="title">Title</label>
+                <input
+                    id="title"
+                    type="text"
+                    placeholder="Enter a new todo"
+                    {...register("title", { required: true })}
+                />
+                {errors.title && (<span>This field is required</span>)}
+            </div>
             <button type="submit">Add</button>
         </form>
     );
-    
+
 };
